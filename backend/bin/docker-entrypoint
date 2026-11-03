@@ -1,0 +1,9 @@
+#!/bin/bash -e
+# No cookies or sessions in this API, so an ephemeral key is fine when none is provided.
+export SECRET_KEY_BASE="${SECRET_KEY_BASE:-$(ruby -rsecurerandom -e 'puts SecureRandom.hex(64)')}"
+
+if [ "$1" == "./bin/rails" ] && [ "$2" == "server" ]; then
+  ./bin/rails db:prepare # creates, migrates and (on first boot only) seeds 10k employees
+fi
+
+exec "$@"

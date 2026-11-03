@@ -19,7 +19,7 @@ export default function App() {
         <Container size="xl" h="100%">
           <Group h="100%" justify="space-between">
             <Title order={3}>ACME Salary Management</Title>
-            <Text c="dimmed" fz="sm">All amounts are annual gross USD</Text>
+            <Text c="dimmed" fz="sm" visibleFrom="sm">All amounts are annual gross USD</Text>
           </Group>
         </Container>
       </AppShell.Header>
