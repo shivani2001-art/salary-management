@@ -129,6 +129,23 @@ body {
   animation-delay: var(--d, 250ms);
 }
 
+/* On dark, a translucent band through the glyphs reads muddy; use a crisp marker underline instead. */
+[data-mantine-color-scheme='dark'] .hl {
+  --hl-swipe: #c9ec4f;
+  background-position: 0 96%;
+  padding-bottom: 0.04em;
+  animation-name: hl-swipe-dark;
+}
+
+@keyframes hl-swipe-dark {
+  from {
+    background-size: 0% 0.14em;
+  }
+  to {
+    background-size: 100% 0.14em;
+  }
+}
+
 @keyframes hl-swipe {
   to {
     background-size: 100% 0.38em;
@@ -600,6 +617,10 @@ body {
   .hl {
     animation: none;
     background-size: 100% 0.38em;
+  }
+
+  [data-mantine-color-scheme='dark'] .hl {
+    background-size: 100% 0.14em;
   }
 
   .band,

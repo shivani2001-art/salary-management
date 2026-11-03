@@ -295,8 +295,9 @@
   display: grid;
   grid-template-columns: minmax(15rem, 1.5fr) repeat(3, minmax(10rem, 1fr)) auto;
   align-items: stretch;
+  gap: 0.4rem;
   margin-bottom: 1.5rem;
-  padding: 0.35rem;
+  padding: 0.4rem;
   border-radius: 999px;
   background: var(--glass, var(--surface));
   -webkit-backdrop-filter: var(--glass-blur, none);
@@ -314,24 +315,26 @@
   min-width: 0;
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
+  /* Each segment is its own tile so the four filters read as separate controls. */
+  background: var(--tile);
+  box-shadow: inset 0 0 0 1px var(--tile-edge);
   transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 
-/* Hairline dividers between segments; hidden next to a hovered/focused segment so pills read cleanly. */
-.rail-field::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 22%;
-  bottom: 22%;
-  width: 1px;
-  background: var(--line);
-  transition: opacity 160ms;
+.filter-rail {
+  --tile: color-mix(in oklch, #ffffff 62%, transparent);
+  --tile-edge: color-mix(in oklch, var(--ink) 10%, transparent);
+}
+
+[data-mantine-color-scheme='dark'] .filter-rail {
+  --tile: color-mix(in oklch, #ffffff 5%, transparent);
+  --tile-edge: color-mix(in oklch, #ffffff 10%, transparent);
 }
 
 .rail-search:hover,
 .rail-field:hover {
   background: var(--row-hover);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--pine) 35%, transparent);
 }
 
 .rail-search:focus-within,
@@ -340,15 +343,6 @@
   box-shadow:
     0 0 0 2px var(--pine),
     0 6px 20px -10px color-mix(in oklch, var(--ink) 35%, transparent);
-}
-
-.rail-search:hover + .rail-field::before,
-.rail-field:hover::before,
-.rail-search:focus-within + .rail-field::before,
-.rail-field:focus-within::before,
-.rail-field:hover + .rail-field::before,
-.rail-field:focus-within + .rail-field::before {
-  opacity: 0;
 }
 
 .rail-search svg,
@@ -420,7 +414,8 @@
 /* A set filter reads as set: pine caption + icon, bold value, faint chartreuse wash. */
 .rail-field[data-active],
 .rail-search[data-active] {
-  background: color-mix(in oklch, var(--hl) 22%, transparent);
+  background: color-mix(in oklch, var(--hl) 24%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--pine) 45%, transparent);
 }
 
 .rail-field[data-active] .rail-label,
@@ -474,24 +469,25 @@
   .filter-rail {
     grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
     border-radius: 1.5rem;
-    row-gap: 0.2rem;
+  }
+
+  .rail-search,
+  .rail-field {
+    border-radius: 1.1rem;
   }
 
   .rail-search {
     grid-column: 1 / -1;
   }
 
-  .rail-search + .rail-field::before {
-    display: none;
-  }
 }
 
 /* Phone: a stacked card, one segment per row, 48px+ touch targets. */
 @media (max-width: 719px) {
   .filter-rail {
     grid-template-columns: 1fr;
-    border-radius: 1.25rem;
-    padding: 0.3rem;
+    border-radius: 1.4rem;
+    padding: 0.4rem;
   }
 
   .rail-search,
@@ -500,14 +496,6 @@
     border-radius: 1rem;
   }
 
-  .rail-field::before {
-    left: 1rem;
-    right: 1rem;
-    top: 0;
-    bottom: auto;
-    width: auto;
-    height: 1px;
-  }
 
   .rail-clear {
     justify-self: start;

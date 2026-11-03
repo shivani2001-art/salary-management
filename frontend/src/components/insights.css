@@ -66,6 +66,11 @@
   border: 0;
 }
 
+/* Mantine draws dividers between inactive options; inside the sentence they look like stray marks. */
+.question .mantine-SegmentedControl-control::before {
+  display: none;
+}
+
 .question .mantine-SegmentedControl-root:has(:focus-visible) {
   outline: 2px solid var(--pine);
   outline-offset: 2px;
@@ -113,6 +118,10 @@
 .q-country .mantine-Input-input:focus {
   border-bottom: 2px solid var(--pine);
   outline: none;
+}
+
+[data-mantine-color-scheme='dark'] .q-country[data-active] .mantine-Input-input {
+  background: linear-gradient(#c9ec4f, #c9ec4f) no-repeat 0 100% / 100% 0.14em;
 }
 
 /* A chosen country gets the highlighter, same as the headline numbers. */
