@@ -1,0 +1,8 @@
+# One-click deploy on Render (Blueprint). Free plan disk is ephemeral: the DB is re-seeded on each restart,
+# which is fine for a demo. For real data, attach a persistent disk mounted at /rails/storage.
+services:
+  - type: web
+    name: acme-salary-management
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
