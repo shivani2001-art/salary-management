@@ -1,0 +1,200 @@
+<!doctype html>
+<!-- README banner. Rendered to docs/assets/banner-{light,dark}.png by docs/assets/src/capture.mjs (?theme=dark). -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=block"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f5f8f4;
+        --ink: #13201a;
+        --muted: #55665d;
+        --pine: #0a7449;
+        --hl: #d5f25c;
+        --band: #b9e0cb;
+        --band-edge: #6fbb95;
+        --glass: color-mix(in oklch, #fbfdfa 70%, transparent);
+        --glass-edge: color-mix(in oklch, #ffffff 80%, transparent);
+        --engrave: color-mix(in oklch, #0a7449 30%, transparent);
+        --line: color-mix(in oklch, #13201a 10%, transparent);
+        --shadow: 0 30px 60px -30px color-mix(in oklch, #13201a 40%, transparent);
+      }
+      .dark {
+        --paper: #0f1612;
+        --ink: #e6eee8;
+        --muted: #98a9a0;
+        --pine: #49ad81;
+        --band: #234a38;
+        --band-edge: #3f8a66;
+        --glass: color-mix(in oklch, #17221d 72%, transparent);
+        --glass-edge: color-mix(in oklch, #ffffff 10%, transparent);
+        --engrave: color-mix(in oklch, #49ad81 28%, transparent);
+        --line: color-mix(in oklch, #ffffff 9%, transparent);
+        --shadow: 0 30px 60px -24px color-mix(in oklch, #000 75%, transparent);
+      }
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1600px; height: 600px; }
+      html, body { background: transparent; }
+      .frame {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background:
+          linear-gradient(150deg, color-mix(in oklch, #49ad81 18%, transparent), transparent 45%),
+          linear-gradient(330deg, color-mix(in oklch, #d5f25c 30%, transparent), transparent 45%),
+          var(--paper);
+        color: var(--ink);
+        font-family: 'Instrument Sans', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        border-radius: 28px;
+      }
+      .dark .frame {
+        background:
+          linear-gradient(150deg, color-mix(in oklch, #148454 26%, transparent), transparent 45%),
+          linear-gradient(330deg, color-mix(in oklch, #b8d94a 8%, transparent), transparent 45%),
+          var(--paper);
+      }
+      .rosette {
+        position: absolute;
+        width: 980px;
+        aspect-ratio: 1;
+        right: -250px;
+        top: -230px;
+        background: var(--engrave);
+        -webkit-mask: url('../../../frontend/src/assets/guilloche.svg') center / contain no-repeat;
+        mask: url('../../../frontend/src/assets/guilloche.svg') center / contain no-repeat;
+        transform: rotate(-12deg);
+      }
+      .copy {
+        position: absolute;
+        left: 88px;
+        top: 76px;
+        width: 760px;
+      }
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-weight: 800;
+        font-size: 30px;
+        letter-spacing: -0.03em;
+      }
+      .wordmark i {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        background: var(--hl);
+        box-shadow: inset 0 0 0 2.5px var(--ink);
+        transform: rotate(-8deg);
+      }
+      .wordmark span { font-weight: 500; color: var(--muted); }
+      h1 {
+        margin-top: 46px;
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-weight: 750;
+        font-size: 92px;
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+      }
+      mark {
+        color: inherit;
+        background: linear-gradient(var(--hl), var(--hl)) no-repeat 0 86% / 100% 0.36em;
+        padding: 0 0.04em;
+      }
+      .dark mark {
+        background: linear-gradient(#c9ec4f, #c9ec4f) no-repeat 0 98% / 100% 0.12em;
+      }
+      p {
+        margin-top: 30px;
+        font-size: 25px;
+        line-height: 1.4;
+        color: var(--muted);
+        max-width: 34ch;
+      }
+      p b { color: var(--ink); font-weight: 600; }
+
+      /* A pay-band card, the app's signature visual */
+      .card {
+        position: absolute;
+        right: 88px;
+        bottom: 84px;
+        width: 560px;
+        padding: 28px 30px 26px;
+        border-radius: 28px;
+        background: var(--glass);
+        backdrop-filter: blur(18px) saturate(1.5);
+        border: 1px solid var(--glass-edge);
+        box-shadow: var(--shadow);
+      }
+      .card-head { display: flex; justify-content: space-between; align-items: baseline; }
+      .card-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+      .card-sub { font-size: 16px; color: var(--muted); }
+      .row { margin-top: 20px; }
+      .row-top { display: flex; justify-content: space-between; font-size: 17px; font-weight: 600; }
+      .row-top span:last-child { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+      .track { position: relative; height: 26px; margin-top: 8px; }
+      .track::before {
+        content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px;
+        border-radius: 2px; background: var(--line);
+      }
+      .band {
+        position: absolute; top: 6px; bottom: 6px; border-radius: 99px;
+        background: var(--band); box-shadow: inset 0 0 0 1.5px var(--band-edge);
+      }
+      .med { position: absolute; top: 1px; bottom: 1px; width: 4px; margin-left: -2px; border-radius: 2px; background: var(--ink); }
+      .avg {
+        position: absolute; top: 50%; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-radius: 50%;
+        background: var(--hl); box-shadow: 0 0 0 2.5px var(--ink);
+      }
+      .legend { display: flex; gap: 22px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+      .legend span { display: inline-flex; align-items: center; gap: 8px; }
+      .sw-band { width: 26px; height: 10px; border-radius: 99px; background: var(--band); box-shadow: inset 0 0 0 1.5px var(--band-edge); }
+      .sw-med { width: 4px; height: 16px; border-radius: 2px; background: var(--ink); }
+      .sw-avg { width: 12px; height: 12px; border-radius: 50%; background: var(--hl); box-shadow: 0 0 0 2px var(--ink); }
+    </style>
+  </head>
+  <body>
+    <main class="frame">
+    <div class="rosette"></div>
+
+    <div class="copy">
+      <div class="wordmark"><i></i>ACME<span>Pay</span></div>
+      <h1>Know how ACME <mark>pays</mark> its <mark>people.</mark></h1>
+      <p>Manage salaries for <b>10,000 employees</b> across <b>10 countries</b>, and get pay answers in one sentence.</p>
+    </div>
+
+    <!-- Real figures from the seeded data (Software Engineer by country), on a $0–$250K scale -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Software Engineer</div>
+        <div class="card-sub">pay band by country</div>
+      </div>
+      <div class="row">
+        <div class="row-top"><span>United States</span><span>$100K – $150K</span></div>
+        <div class="track"><i class="band" style="left: 40%; width: 20%"></i><i class="med" style="left: 50.2%"></i><i class="avg" style="left: 50%"></i></div>
+      </div>
+      <div class="row">
+        <div class="row-top"><span>Germany</span><span>$85.5K – $127K</span></div>
+        <div class="track"><i class="band" style="left: 34.2%; width: 16.6%"></i><i class="med" style="left: 43.3%"></i><i class="avg" style="left: 43%"></i></div>
+      </div>
+      <div class="row">
+        <div class="row-top"><span>India</span><span>$28K – $42K</span></div>
+        <div class="track"><i class="band" style="left: 11.2%; width: 5.6%"></i><i class="med" style="left: 14.2%"></i><i class="avg" style="left: 13.9%"></i></div>
+      </div>
+      <div class="legend">
+        <span><i class="sw-band"></i>Lowest to highest</span>
+        <span><i class="sw-med"></i>Median</span>
+        <span><i class="sw-avg"></i>Average</span>
+      </div>
+    </div>
+    </main>
+    <script>
+      if (new URLSearchParams(location.search).get('theme') === 'dark') document.documentElement.classList.add('dark')
+    </script>
+  </body>
