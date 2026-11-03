@@ -402,8 +402,24 @@
   opacity: 1;
 }
 
+/* Centre the clear ✕ and chevron on the whole tile, not on the value line under the caption:
+   the input wrapper stops being the positioning context, so the section anchors to .rail-field. */
+.rail-field {
+  padding-right: 3.75rem;
+}
+
+.rail-field .mantine-Input-wrapper,
+.rail-field .mantine-Select-wrapper {
+  position: static;
+}
+
 .rail-field .mantine-Input-section[data-position='right'] {
-  width: 1.4rem;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  right: 0.85rem;
+  width: auto;
+  gap: 0.35rem;
   color: var(--muted);
 }
 
