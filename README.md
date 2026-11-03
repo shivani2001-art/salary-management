@@ -190,16 +190,20 @@ The HR Manager gets two places to work:
 ## 📐 &nbsp;Architecture
 
 ```mermaid
-flowchart LR
-  HR([HR Manager]) -->|"/"| APP
-  HR -->|"/api/*"| APP
-  subgraph IMG["One Docker image · Vercel Container Runtime"]
-    APP["Rails 8 API<br/>Puma"]
-    APP --> Q["EmployeesQuery<br/>search · filter · sort · page"]
-    APP --> S["SalaryStats<br/>summary · breakdowns · medians"]
-    Q --> DB[("SQLite<br/>10k seeded rows")]
+flowchart TB
+  HR(["👩‍💼 HR Manager · browser"]) -->|"/ and /api/*"| APP
+  subgraph IMG["🐳 One Docker image · Vercel Container Runtime"]
+    direction TB
+    APP["Rails 8 API · Puma"]
+    SPA["React 19 + Mantine<br/>Vite build served from public/"]
+    Q["EmployeesQuery<br/>search · filter · sort · page"]
+    S["SalaryStats<br/>summary · breakdowns · medians"]
+    DB[("SQLite · 10k seeded rows")]
+    APP -. serves .-> SPA
+    APP --> Q
+    APP --> S
+    Q --> DB
     S --> DB
-    APP -. serves .-> SPA["React 19 + Mantine<br/>Vite build in public/"]
   end
 ```
 
