@@ -65,7 +65,7 @@ export function EmployeeForm({ employee, options, onSubmit, onCancel }: Props) {
       <Stack>
         {formError ? <Alert color="red">{formError}</Alert> : null}
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          <TextInput label="First name" withAsterisk {...form.getInputProps('first_name')} />
+          <TextInput label="First name" withAsterisk data-autofocus {...form.getInputProps('first_name')} />
           <TextInput label="Last name" withAsterisk {...form.getInputProps('last_name')} />
         </SimpleGrid>
         <TextInput label="Email" type="email" withAsterisk {...form.getInputProps('email')} />

@@ -95,7 +95,7 @@ export const api = {
   filterOptions: () => request<FilterOptions>('/employees/filter_options'),
   createEmployee: (employee: EmployeeInput) =>
     request<Employee>('/employees', { method: 'POST', body: JSON.stringify({ employee }) }),
-  updateEmployee: (id: number, employee: EmployeeInput) =>
+  updateEmployee: (id: number, employee: Partial<EmployeeInput>) =>
     request<Employee>(`/employees/${id}`, { method: 'PATCH', body: JSON.stringify({ employee }) }),
   deleteEmployee: (id: number) => request<void>(`/employees/${id}`, { method: 'DELETE' }),
   summary: (filters: Filters) => request<Summary>(`/insights/summary${toQuery(filters)}`),

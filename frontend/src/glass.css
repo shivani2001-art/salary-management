@@ -1,0 +1,240 @@
+/*
+ * Glass layer: frosted surfaces over a slow ambient light field (pine, chartreuse, lagoon).
+ * Loaded after page styles so it can retint shared tokens and containers without touching components.
+ */
+:root {
+  --glass: color-mix(in oklch, #fbfdfa 56%, transparent);
+  --glass-strong: color-mix(in oklch, #fbfdfa 80%, transparent);
+  --glass-border: color-mix(in oklch, #ffffff 75%, transparent);
+  --glass-shadow:
+    0 18px 50px -24px color-mix(in oklch, #13201a 35%, transparent),
+    inset 0 1px 0 color-mix(in oklch, #ffffff 70%, transparent);
+  --glass-blur: saturate(1.6) blur(18px);
+  --surface: var(--glass-strong);
+  --line: color-mix(in oklch, #13201a 11%, transparent);
+  --row-hover: color-mix(in oklch, #0a7449 7%, transparent);
+  --field-a: color-mix(in oklch, #49ad81 42%, transparent);
+  --field-b: color-mix(in oklch, #d5f25c 60%, transparent);
+  --field-c: color-mix(in oklch, #5fc3c9 34%, transparent);
+}
+
+[data-mantine-color-scheme='dark'] {
+  --glass: color-mix(in oklch, #17221d 52%, transparent);
+  --glass-strong: color-mix(in oklch, #17221d 78%, transparent);
+  --glass-border: color-mix(in oklch, #ffffff 9%, transparent);
+  --glass-shadow:
+    0 24px 60px -24px color-mix(in oklch, #000000 70%, transparent),
+    inset 0 1px 0 color-mix(in oklch, #ffffff 7%, transparent);
+  --line: color-mix(in oklch, #ffffff 8%, transparent);
+  --row-hover: color-mix(in oklch, #49ad81 10%, transparent);
+  --field-a: color-mix(in oklch, #148454 45%, transparent);
+  --field-b: color-mix(in oklch, #b8d94a 16%, transparent);
+  --field-c: color-mix(in oklch, #1f7f86 30%, transparent);
+}
+
+/* ---------- Ambient light field ---------- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 34% at 18% 22%, var(--field-a), transparent 70%),
+    radial-gradient(30% 28% at 82% 18%, var(--field-b), transparent 70%),
+    radial-gradient(42% 40% at 70% 82%, var(--field-c), transparent 72%),
+    radial-gradient(26% 24% at 28% 78%, var(--field-b), transparent 70%);
+  animation: drift 36s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(4%, -3%, 0) rotate(8deg) scale(1.06);
+  }
+}
+
+/* ---------- Glass surfaces ---------- */
+.glass,
+.appbar,
+.question,
+.pay-bands,
+.people-scroll,
+.panel {
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.appbar {
+  border-width: 0 0 1px;
+  box-shadow: none;
+}
+
+.question {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+  border-radius: 999px;
+}
+
+.pay-bands {
+  padding: 1.25rem 1.25rem 0.25rem;
+  border-radius: 1.5rem;
+}
+
+.pay-bands .bands tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.people-scroll {
+  border-radius: 1.5rem;
+  padding: 0.25rem 0.5rem 0.25rem;
+}
+
+.people th {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.people thead th:first-child {
+  border-top-left-radius: 1.25rem;
+}
+
+.people thead th:last-child {
+  border-top-right-radius: 1.25rem;
+}
+
+.people tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.panel {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: saturate(1.6) blur(28px);
+  backdrop-filter: saturate(1.6) blur(28px);
+  border-radius: 1.5rem;
+}
+
+.scrim {
+  background: color-mix(in oklch, var(--ink) 18%, transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.empty {
+  border-radius: 1.5rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+/* Mantine controls pick up the same frosted material. */
+.mantine-Input-input,
+.mantine-SegmentedControl-root,
+.mantine-Pagination-control {
+  background-color: var(--glass-strong);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-color: var(--glass-border);
+}
+
+.mantine-SegmentedControl-indicator {
+  background: var(--ink);
+  box-shadow: none;
+}
+
+.mantine-SegmentedControl-label[data-active],
+.mantine-SegmentedControl-label[data-active]:hover {
+  color: var(--paper);
+}
+
+.mantine-Pagination-control[data-active] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.mantine-Popover-dropdown,
+.mantine-Combobox-dropdown,
+.mantine-Notification-root {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: saturate(1.6) blur(22px);
+  backdrop-filter: saturate(1.6) blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 719px) {
+  /* Each person is its own glass card, so the list container stays clear. */
+  .people-scroll {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .people th {
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .people tbody tr {
+    background: var(--glass);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .question {
+    border-radius: 1.25rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .pay-bands {
+    padding: 1rem 1rem 0.25rem;
+    border-radius: 1.25rem;
+  }
+}
+
+/* Blur is expensive; without support, fall back to near-opaque surfaces so text stays readable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass: color-mix(in oklch, #fbfdfa 94%, transparent);
+    --glass-strong: #fbfdfa;
+  }
+
+  [data-mantine-color-scheme='dark'] {
+    --glass: #17221d;
+    --glass-strong: #17221d;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .appbar,
+  .question,
+  .pay-bands,
+  .people-scroll,
+  .panel,
+  .people tbody tr {
+    background: var(--paper) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}

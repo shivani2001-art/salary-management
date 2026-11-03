@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     // Same-origin in dev, like production (Rails serves the built app), so no CORS setup is needed.
-    proxy: { '/api': 'http://localhost:3000' },
+    proxy: { '/api': process.env.API_URL ?? 'http://localhost:3000' },
   },
   test: {
     environment: 'jsdom',

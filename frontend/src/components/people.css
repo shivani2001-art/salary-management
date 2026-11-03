@@ -1,0 +1,313 @@
+/* People page: layout + responsive extras on top of the shared classes in styles.css. */
+
+.people-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.people-head .page-kicker {
+  margin-bottom: 0;
+  min-height: 1.4em;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1.6fr) repeat(3, minmax(9rem, 1fr)) auto;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.people-scroll {
+  overflow-x: auto;
+  transition: opacity 200ms 150ms; /* delay so quick refetches don't flicker */
+}
+
+.people-scroll[data-busy] {
+  opacity: 0.6;
+}
+
+/* The page scrolls under the sticky app bar, so the header sticks just below it. */
+@media (min-width: 1000px) {
+  .people-scroll {
+    overflow-x: visible;
+  }
+
+  .people th {
+    top: 57px;
+  }
+}
+
+.people th.right {
+  text-align: right;
+}
+
+.people .c-who {
+  min-width: 16rem;
+}
+
+.people .c-hired {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.people .c-salary {
+  white-space: nowrap;
+  width: 9rem;
+}
+
+.people .c-actions {
+  width: 5rem;
+}
+
+.who-text {
+  min-width: 0;
+}
+
+.who-email {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.salary-input {
+  width: 8.5rem;
+  margin-left: auto;
+}
+
+.salary-input input {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.people-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-top: 1.25rem;
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panel-kicker {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+/* ---------- Tablet: filters wrap into two columns ---------- */
+@media (max-width: 999px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filters > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Phone: one card per person ---------- */
+@media (max-width: 719px) {
+  .people-head {
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+
+  .people-head .mantine-Button-root {
+    width: 100%;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .filters > .mantine-Button-root {
+    justify-self: start;
+  }
+
+  .people-scroll {
+    overflow: visible;
+  }
+
+  .people {
+    min-width: 0;
+    display: block;
+  }
+
+  .people tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* Header becomes a row of sort chips; non-sortable labels are dropped. */
+  .people thead,
+  .people thead tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .people thead {
+    margin-bottom: 0.75rem;
+  }
+
+  .people thead tr::before {
+    content: 'Sort by';
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-right: 0.15rem;
+  }
+
+  .people th {
+    position: static;
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .people th:not([aria-sort]):not(:has(.sort-btn)) {
+    display: none;
+  }
+
+  .people th .sort-btn {
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  .people th .sort-btn[data-active] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .people tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem 0.5rem;
+    padding: 0.9rem 0.9rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+  }
+
+  .people tbody tr:hover,
+  .people tbody tr:focus-within {
+    background: var(--surface);
+  }
+
+  .people td {
+    display: block;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .flash td {
+    animation: none;
+  }
+
+  .people tbody tr.flash {
+    animation: flash 1400ms var(--ease-out);
+  }
+
+  .people .c-who {
+    order: 1;
+    flex: 1 1 calc(100% - 5.5rem);
+    min-width: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .people .c-actions {
+    order: 2;
+    width: auto;
+  }
+
+  .row-actions {
+    opacity: 1;
+  }
+
+  /* "Job title · Department · Country" on one wrapping line. */
+  .people .c-title,
+  .people .c-dept,
+  .people .c-country {
+    order: 3;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .people .c-dept::before,
+  .people .c-country::before {
+    content: '·';
+    margin-right: 0.5rem;
+  }
+
+  .people .c-dept .dept {
+    color: var(--ink);
+  }
+
+  /* Line break before hired/salary. */
+  .people tbody tr::after {
+    content: '';
+    order: 4;
+    flex-basis: 100%;
+  }
+
+  .people .c-hired {
+    order: 5;
+    flex: 1;
+    font-size: 0.8rem;
+    margin-top: 0.55rem;
+  }
+
+  .people .c-hired.num::before {
+    content: 'Hired ';
+  }
+
+  .people .c-salary {
+    order: 6;
+    width: auto;
+    margin-top: 0.4rem;
+  }
+
+  .people .c-salary .salary-btn {
+    font-family: var(--display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .people-foot {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .panel {
+    top: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+    padding: 1.15rem;
+  }
+}

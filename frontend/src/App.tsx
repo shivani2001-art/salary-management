@@ -1,4 +1,4 @@
-import { Alert, AppShell, Container, Group, Tabs, Text, Title } from '@mantine/core'
+import { Alert, Box, Container, Group, Tabs, Text } from '@mantine/core'
 import { useState } from 'react'
 import { api } from './api'
 import { EmployeesPage } from './components/EmployeesPage'
@@ -14,32 +14,35 @@ export default function App() {
   const onDataChanged = () => setDataVersion((v) => v + 1)
 
   return (
-    <AppShell header={{ height: 60 }} padding="md">
-      <AppShell.Header>
-        <Container size="xl" h="100%">
-          <Group h="100%" justify="space-between">
-            <Title order={3}>ACME Salary Management</Title>
-            <Text c="dimmed" fz="sm" visibleFrom="sm">All amounts are annual gross USD</Text>
+    <Tabs defaultValue="insights" keepMounted={false} variant="pills">
+      <Box component="header" className="appbar" pos="sticky" top={0} style={{ zIndex: 100 }}>
+        <Container size="xl" py={10}>
+          <Group justify="space-between" wrap="nowrap" gap="sm">
+            <div className="wordmark" aria-label="ACME Pay">
+              <i aria-hidden />
+              ACME<span>Pay</span>
+            </div>
+            <Tabs.List className="nav-list">
+              <Tabs.Tab value="insights" className="nav-tab">Insights</Tabs.Tab>
+              <Tabs.Tab value="employees" className="nav-tab">People</Tabs.Tab>
+            </Tabs.List>
+            <Text c="dimmed" fz="xs" visibleFrom="md">Annual gross · USD</Text>
           </Group>
         </Container>
-      </AppShell.Header>
-      <AppShell.Main>
-        <Container size="xl">
-          {options.error ? <Alert color="red" mb="md" title="Couldn't reach the server">{options.error.message}</Alert> : null}
-          <Tabs defaultValue="employees" keepMounted={false}>
-            <Tabs.List mb="md">
-              <Tabs.Tab value="employees">Employees</Tabs.Tab>
-              <Tabs.Tab value="insights">Insights</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value="employees">
-              <EmployeesPage options={options.data ?? EMPTY_OPTIONS} onDataChanged={onDataChanged} />
-            </Tabs.Panel>
-            <Tabs.Panel value="insights">
-              <InsightsPage options={options.data ?? EMPTY_OPTIONS} refreshKey={dataVersion} />
-            </Tabs.Panel>
-          </Tabs>
-        </Container>
-      </AppShell.Main>
-    </AppShell>
+      </Box>
+      <Container size="xl" component="main" py={{ base: 'lg', sm: 40 }}>
+        {options.error ? (
+          <Alert color="red" mb="md" title="Can't reach the server">
+            {options.error.message}. Check that the API is running, then reload.
+          </Alert>
+        ) : null}
+        <Tabs.Panel value="insights">
+          <InsightsPage options={options.data ?? EMPTY_OPTIONS} refreshKey={dataVersion} />
+        </Tabs.Panel>
+        <Tabs.Panel value="employees">
+          <EmployeesPage options={options.data ?? EMPTY_OPTIONS} onDataChanged={onDataChanged} />
+        </Tabs.Panel>
+      </Container>
+    </Tabs>
   )
 }

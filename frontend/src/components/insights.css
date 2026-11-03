@@ -1,0 +1,200 @@
+/* Insights page: layout + responsive rules on top of the shared tokens/classes in styles.css. */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Skeleton stand-in for a number in the headline while the first summary loads. */
+.num-skel {
+  display: inline-block;
+  width: var(--w, 4ch);
+  height: 0.72em;
+  vertical-align: baseline;
+  border-radius: 0.12em;
+  background: var(--line);
+  animation: skel-pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes skel-pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- Question sentence ---------- */
+.q-seg {
+  flex: none;
+}
+
+.q-in {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 14rem;
+  max-width: 20rem;
+}
+
+.q-in .mantine-Select-root {
+  flex: 1;
+}
+
+@media (max-width: 40em) {
+  .q-seg {
+    flex-basis: 100%;
+  }
+
+  .q-in {
+    max-width: none;
+  }
+}
+
+/* ---------- Pay bands ---------- */
+.pay-bands .legend {
+  margin-bottom: 1rem;
+}
+
+.bands-wrap {
+  container: bands / inline-size;
+  overflow-x: auto; /* fallback only; the stacked layout below should never need it */
+}
+
+.bands-wrap .bands {
+  min-width: 0;
+}
+
+.bands th.c-band {
+  width: 52%;
+  vertical-align: bottom;
+}
+
+.bands .c-med,
+.bands .c-avg {
+  width: 7.5rem;
+  white-space: nowrap;
+}
+
+.bands .c-avg {
+  font-weight: 600;
+}
+
+.band-axis span:last-child {
+  transform: translateX(-100%);
+}
+
+.band-range {
+  gap: 0.5rem;
+  min-width: max-content;
+}
+
+.bands td[data-label]::before {
+  display: none;
+}
+
+/* Narrow: each row becomes a stacked card. Name + people, band full width, median/average side by side. */
+@container bands (max-width: 639px) {
+  .bands,
+  .bands thead,
+  .bands tbody {
+    display: block;
+  }
+
+  .bands tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'name name'
+      'band band'
+      'med avg';
+    column-gap: 1rem;
+  }
+
+  .bands th,
+  .bands td {
+    border-bottom: 0;
+    padding: 0;
+  }
+
+  .bands thead tr {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bands thead th:not(.c-band) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .bands tbody tr {
+    row-gap: 0.4rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bands tbody tr:hover td {
+    background: none;
+  }
+
+  .bands .c-name {
+    grid-area: name;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .bands .band-name {
+    white-space: normal;
+  }
+
+  .bands .band-sub {
+    flex: none;
+  }
+
+  .bands th.c-band,
+  .bands td.c-band {
+    grid-area: band;
+    width: auto;
+  }
+
+  .bands .c-med,
+  .bands .c-avg {
+    width: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .bands .c-med {
+    grid-area: med;
+    text-align: left;
+  }
+
+  .bands .c-avg {
+    grid-area: avg;
+    justify-content: flex-end;
+  }
+
+  .bands td[data-label]::before {
+    display: inline;
+    content: attr(data-label);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .num-skel {
+    animation: none;
+  }
+}
