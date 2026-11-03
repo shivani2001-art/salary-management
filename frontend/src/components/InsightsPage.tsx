@@ -105,7 +105,7 @@ export function BreakdownTable({ rows, label }: { rows: BreakdownRow[]; label: s
               <Table.Td ta="right" ff="monospace">{formatUSD(row.max_salary)}</Table.Td>
               <Table.Td ta="right" ff="monospace" fw={600}>{formatUSD(row.average_salary)}</Table.Td>
               <Table.Td>
-                <Progress value={(row.average_salary / top) * 100} aria-label={`${row.name} average relative to highest`} />
+                <Progress value={Math.round((row.average_salary / top) * 100)} aria-label={`${row.name} average relative to highest`} />
               </Table.Td>
             </Table.Tr>
           ))}
