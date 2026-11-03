@@ -153,6 +153,26 @@
   border: 1px solid var(--glass-border);
 }
 
+/* Theme toggle: a glass button with a quick icon turn on change. */
+.theme-toggle {
+  background: var(--glass-strong);
+  border-color: color-mix(in oklch, var(--ink) 16%, transparent);
+  color: var(--ink);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.theme-toggle svg {
+  animation: toggle-turn 420ms var(--ease-out);
+}
+
+@keyframes toggle-turn {
+  from {
+    transform: rotate(-90deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
 /* Mantine controls pick up the same frosted material. */
 .mantine-Input-input,
 .mantine-SegmentedControl-root,
@@ -240,7 +260,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rosette {
+  .rosette,
+  .theme-toggle svg {
     animation: none;
   }
 }

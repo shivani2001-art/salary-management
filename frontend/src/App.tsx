@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { api } from './api'
 import { EmployeesPage } from './components/EmployeesPage'
 import { InsightsPage } from './components/InsightsPage'
+import { ThemeToggle } from './components/ThemeToggle'
 import { useApi } from './useApi'
 
 const EMPTY_OPTIONS = { countries: [], departments: [], job_titles: [] }
@@ -30,7 +31,10 @@ export default function App() {
               <Tabs.Tab value="employees" className="nav-tab">People</Tabs.Tab>
               <Tabs.Tab value="insights" className="nav-tab">Insights</Tabs.Tab>
             </Tabs.List>
-            <Text c="dimmed" fz="xs" visibleFrom="md">Annual gross · USD</Text>
+            <Group gap="md" wrap="nowrap">
+              <Text c="dimmed" fz="xs" visibleFrom="md">Annual gross · USD</Text>
+              <ThemeToggle />
+            </Group>
           </Group>
         </Container>
       </Box>
