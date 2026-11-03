@@ -27,6 +27,8 @@ RUN bundle exec bootsnap precompile app/ lib/ && \
     useradd rails --create-home --shell /bin/bash && \
     mkdir -p storage tmp log && chown -R rails:rails storage tmp log
 USER rails
+# Bake the seeded 10k-employee database into the image so a cold start doesn't have to seed.
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails db:prepare
 EXPOSE 3000
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
