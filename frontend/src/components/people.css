@@ -295,15 +295,8 @@
   display: grid;
   grid-template-columns: minmax(15rem, 1.5fr) repeat(3, minmax(10rem, 1fr)) auto;
   align-items: stretch;
-  gap: 0.4rem;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
-  padding: 0.4rem;
-  border-radius: 999px;
-  background: var(--glass, var(--surface));
-  -webkit-backdrop-filter: var(--glass-blur, none);
-  backdrop-filter: var(--glass-blur, none);
-  border: 1px solid var(--glass-border, var(--line));
-  box-shadow: var(--glass-shadow, none);
 }
 
 .rail-search,
@@ -315,26 +308,29 @@
   min-width: 0;
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
-  /* Each segment is its own tile so the four filters read as separate controls. */
+  /* Each filter is its own floating glass pill, so the four read as separate controls. */
   background: var(--tile);
-  box-shadow: inset 0 0 0 1px var(--tile-edge);
+  -webkit-backdrop-filter: var(--glass-blur, none);
+  backdrop-filter: var(--glass-blur, none);
+  box-shadow: inset 0 0 0 1px var(--tile-edge), var(--tile-shadow);
   transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 
 .filter-rail {
-  --tile: color-mix(in oklch, #ffffff 62%, transparent);
-  --tile-edge: color-mix(in oklch, var(--ink) 10%, transparent);
+  --tile: color-mix(in oklch, #fbfdfa 82%, transparent);
+  --tile-edge: color-mix(in oklch, var(--ink) 14%, transparent);
+  --tile-shadow: 0 8px 24px -14px color-mix(in oklch, var(--ink) 45%, transparent);
 }
 
 [data-mantine-color-scheme='dark'] .filter-rail {
-  --tile: color-mix(in oklch, #ffffff 5%, transparent);
-  --tile-edge: color-mix(in oklch, #ffffff 10%, transparent);
+  --tile: color-mix(in oklch, #1d2a24 88%, transparent);
+  --tile-edge: color-mix(in oklch, #ffffff 16%, transparent);
+  --tile-shadow: 0 10px 28px -12px color-mix(in oklch, #000000 75%, transparent);
 }
 
 .rail-search:hover,
 .rail-field:hover {
-  background: var(--row-hover);
-  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--pine) 35%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--pine) 55%, transparent), var(--tile-shadow);
 }
 
 .rail-search:focus-within,
@@ -414,8 +410,8 @@
 /* A set filter reads as set: pine caption + icon, bold value, faint chartreuse wash. */
 .rail-field[data-active],
 .rail-search[data-active] {
-  background: color-mix(in oklch, var(--hl) 24%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--pine) 45%, transparent);
+  background: color-mix(in oklch, var(--hl) 30%, var(--tile));
+  box-shadow: inset 0 0 0 1.5px var(--pine), var(--tile-shadow);
 }
 
 .rail-field[data-active] .rail-label,
@@ -461,14 +457,13 @@
 
 [data-mantine-color-scheme='dark'] .rail-field[data-active],
 [data-mantine-color-scheme='dark'] .rail-search[data-active] {
-  background: color-mix(in oklch, var(--pine) 18%, transparent);
+  background: color-mix(in oklch, var(--pine) 22%, var(--tile));
 }
 
 /* Tablet: search gets its own row, the three filters share the next. */
 @media (max-width: 999px) {
   .filter-rail {
     grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
-    border-radius: 1.5rem;
   }
 
   .rail-search,
@@ -486,8 +481,7 @@
 @media (max-width: 719px) {
   .filter-rail {
     grid-template-columns: 1fr;
-    border-radius: 1.4rem;
-    padding: 0.4rem;
+    gap: 0.6rem;
   }
 
   .rail-search,

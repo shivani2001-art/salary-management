@@ -14,7 +14,7 @@ export default function App() {
   const onDataChanged = () => setDataVersion((v) => v + 1)
 
   return (
-    <Tabs defaultValue="insights" keepMounted={false} variant="pills">
+    <Tabs defaultValue="employees" keepMounted={false} variant="pills">
       <div className="backdrop" aria-hidden>
         <i className="rosette rosette-a" />
         <i className="rosette rosette-b" />
@@ -27,8 +27,8 @@ export default function App() {
               ACME<span>Pay</span>
             </div>
             <Tabs.List className="nav-list">
-              <Tabs.Tab value="insights" className="nav-tab">Insights</Tabs.Tab>
               <Tabs.Tab value="employees" className="nav-tab">People</Tabs.Tab>
+              <Tabs.Tab value="insights" className="nav-tab">Insights</Tabs.Tab>
             </Tabs.List>
             <Text c="dimmed" fz="xs" visibleFrom="md">Annual gross · USD</Text>
           </Group>
@@ -40,11 +40,11 @@ export default function App() {
             {options.error.message}. Check that the API is running, then reload.
           </Alert>
         ) : null}
-        <Tabs.Panel value="insights">
-          <InsightsPage options={options.data ?? EMPTY_OPTIONS} refreshKey={dataVersion} />
-        </Tabs.Panel>
         <Tabs.Panel value="employees">
           <EmployeesPage options={options.data ?? EMPTY_OPTIONS} onDataChanged={onDataChanged} />
+        </Tabs.Panel>
+        <Tabs.Panel value="insights">
+          <InsightsPage options={options.data ?? EMPTY_OPTIONS} refreshKey={dataVersion} />
         </Tabs.Panel>
       </Container>
     </Tabs>
