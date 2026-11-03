@@ -14,13 +14,6 @@
   min-height: 1.4em;
 }
 
-.filters {
-  display: grid;
-  grid-template-columns: minmax(16rem, 1.6fr) repeat(3, minmax(9rem, 1fr)) auto;
-  gap: 0.6rem;
-  align-items: center;
-  margin-bottom: 1.25rem;
-}
 
 .people-scroll {
   overflow-x: auto;
@@ -112,15 +105,6 @@
 }
 
 /* ---------- Tablet: filters wrap into two columns ---------- */
-@media (max-width: 999px) {
-  .filters {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .filters > :first-child {
-    grid-column: 1 / -1;
-  }
-}
 
 /* ---------- Phone: one card per person ---------- */
 @media (max-width: 719px) {
@@ -133,13 +117,7 @@
     width: 100%;
   }
 
-  .filters {
-    grid-template-columns: 1fr;
-  }
 
-  .filters > .mantine-Button-root {
-    justify-self: start;
-  }
 
   .people-scroll {
     overflow: visible;
@@ -309,5 +287,236 @@
     left: 0.5rem;
     width: auto;
     padding: 1.15rem;
+  }
+}
+
+/* ---------- Filter rail: one glass bar, each segment a caption over its value ---------- */
+.filter-rail {
+  display: grid;
+  grid-template-columns: minmax(15rem, 1.5fr) repeat(3, minmax(10rem, 1fr)) auto;
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: var(--glass, var(--surface));
+  -webkit-backdrop-filter: var(--glass-blur, none);
+  backdrop-filter: var(--glass-blur, none);
+  border: 1px solid var(--glass-border, var(--line));
+  box-shadow: var(--glass-shadow, none);
+}
+
+.rail-search,
+.rail-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+/* Hairline dividers between segments; hidden next to a hovered/focused segment so pills read cleanly. */
+.rail-field::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: var(--line);
+  transition: opacity 160ms;
+}
+
+.rail-search:hover,
+.rail-field:hover {
+  background: var(--row-hover);
+}
+
+.rail-search:focus-within,
+.rail-field:focus-within {
+  background: var(--surface);
+  box-shadow:
+    0 0 0 2px var(--pine),
+    0 6px 20px -10px color-mix(in oklch, var(--ink) 35%, transparent);
+}
+
+.rail-search:hover + .rail-field::before,
+.rail-field:hover::before,
+.rail-search:focus-within + .rail-field::before,
+.rail-field:focus-within::before,
+.rail-field:hover + .rail-field::before,
+.rail-field:focus-within + .rail-field::before {
+  opacity: 0;
+}
+
+.rail-search svg,
+.rail-icon {
+  flex: none;
+  color: var(--muted);
+  transition: color 160ms;
+}
+
+.rail-search input {
+  all: unset;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.rail-search input::placeholder {
+  color: var(--muted);
+}
+
+.rail-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.rail-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.rail-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1.2;
+  transition: color 160ms;
+}
+
+.rail-field .mantine-Input-input.rail-input {
+  height: 1.4rem;
+  min-height: 0;
+  padding: 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.rail-field .rail-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.rail-field .mantine-Input-section[data-position='right'] {
+  width: 1.4rem;
+  color: var(--muted);
+}
+
+/* A set filter reads as set: pine caption + icon, bold value, faint chartreuse wash. */
+.rail-field[data-active],
+.rail-search[data-active] {
+  background: color-mix(in oklch, var(--hl) 22%, transparent);
+}
+
+.rail-field[data-active] .rail-label,
+.rail-field[data-active] .rail-icon,
+.rail-search[data-active] svg {
+  color: var(--pine);
+}
+
+.rail-field[data-active] .rail-input {
+  font-weight: 600;
+}
+
+.rail-clear {
+  all: unset;
+  cursor: pointer;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0.35rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--ink);
+  animation: fade-in 200ms var(--ease-out);
+  transition: transform 160ms var(--ease-out);
+}
+
+.rail-clear:hover {
+  transform: translateY(-1px);
+}
+
+.rail-clear:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.rail-clear:focus-visible {
+  outline: 2px solid var(--pine);
+  outline-offset: 2px;
+}
+
+[data-mantine-color-scheme='dark'] .rail-field[data-active],
+[data-mantine-color-scheme='dark'] .rail-search[data-active] {
+  background: color-mix(in oklch, var(--pine) 18%, transparent);
+}
+
+/* Tablet: search gets its own row, the three filters share the next. */
+@media (max-width: 999px) {
+  .filter-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    border-radius: 1.5rem;
+    row-gap: 0.2rem;
+  }
+
+  .rail-search {
+    grid-column: 1 / -1;
+  }
+
+  .rail-search + .rail-field::before {
+    display: none;
+  }
+}
+
+/* Phone: a stacked card, one segment per row, 48px+ touch targets. */
+@media (max-width: 719px) {
+  .filter-rail {
+    grid-template-columns: 1fr;
+    border-radius: 1.25rem;
+    padding: 0.3rem;
+  }
+
+  .rail-search,
+  .rail-field {
+    min-height: 3.1rem;
+    border-radius: 1rem;
+  }
+
+  .rail-field::before {
+    left: 1rem;
+    right: 1rem;
+    top: 0;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+
+  .rail-clear {
+    justify-self: start;
+    margin: 0.35rem 0.5rem 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-clear {
+    animation: none;
   }
 }

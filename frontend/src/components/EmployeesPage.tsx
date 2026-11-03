@@ -1,8 +1,20 @@
-import { ActionIcon, Alert, Button, Group, Pagination, Popover, Select, Skeleton, Text, TextInput, VisuallyHidden } from '@mantine/core'
+import { ActionIcon, Alert, Button, Group, Pagination, Popover, Select, Skeleton, Text, VisuallyHidden } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import { IconArrowDown, IconArrowUp, IconPencil, IconPlus, IconSearch, IconTrash, IconX } from '@tabler/icons-react'
-import { type CSSProperties, useCallback, useRef, useState } from 'react'
+import {
+  type Icon,
+  IconArrowDown,
+  IconArrowUp,
+  IconBriefcase,
+  IconBuilding,
+  IconPencil,
+  IconPlus,
+  IconSearch,
+  IconTrash,
+  IconWorld,
+  IconX,
+} from '@tabler/icons-react'
+import { type CSSProperties, useCallback, useId, useRef, useState } from 'react'
 import { api, type Employee, type EmployeeInput, type FilterOptions, type ListParams } from '../api'
 import { formatCount, formatUSD } from '../format'
 import { vtName, withViewTransition } from '../motion'
@@ -37,12 +49,12 @@ export function EmployeesPage({ options, onDataChanged }: Props) {
   const [sort, setSort] = useState<SortKey>('name')
   const [direction, setDirection] = useState<'asc' | 'desc'>('asc')
   const [page, setPage] = useState(1)
-  // undefined = closed, null = adding, Employee = editing
-  const [editing, setEditing] = useState<Employee | null | undefined>(undefined)
+  // null = adding; kept after closing so the panel's content doesn't change while it animates out
+  const [editing, setEditing] = useState<Employee | null>(null)
+  const [panelOpen, setPanelOpen] = useState(false)
   const [confirmingDelete, setConfirmingDelete] = useState<number | null>(null)
   const [flashId, setFlashId] = useState<number | null>(null)
   const flashTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const trigger = useRef<HTMLElement | null>(null)
 
   const { data, error, loading, reload, mutate } = useApi(
     () =>
@@ -97,37 +109,19 @@ export function EmployeesPage({ options, onDataChanged }: Props) {
   const patchRow = (id: number, changes: Partial<Employee>) =>
     mutate((d) => d && { ...d, data: d.data.map((e) => (e.id === id ? { ...e, ...changes } : e)) })
 
-  // ---------- Side panel with a morph from/to its trigger ----------
-  const openPanel = (employee: Employee | null, from: HTMLElement | null) => {
-    trigger.current = from
-    if (from) from.style.viewTransitionName = 'editor'
-    withViewTransition(() => {
-      if (from) from.style.viewTransitionName = ''
-      setEditing(employee)
-    })
+  // ---------- Side panel ----------
+  const openPanel = (employee: Employee | null) => {
+    setEditing(employee)
+    setPanelOpen(true)
   }
 
-  const closePanel = useCallback(() => {
-    const from = trigger.current
-    return new Promise<void>((resolve) =>
-      withViewTransition(
-        () => {
-          setEditing(undefined)
-          if (from?.isConnected) from.style.viewTransitionName = 'editor'
-        },
-        () => {
-          if (from) from.style.viewTransitionName = ''
-          resolve()
-        },
-      ),
-    )
-  }, [])
+  const closePanel = useCallback(() => setPanelOpen(false), [])
 
   const save = async (values: EmployeeInput) => {
     const name = fullName(values)
     if (editing) await api.updateEmployee(editing.id, values)
     else await api.createEmployee(values)
-    await closePanel()
+    closePanel()
     notifications.show({ color: 'teal', message: editing ? `Saved ${name}` : `Added ${name}` })
     reload()
     onDataChanged()
@@ -204,29 +198,33 @@ export function EmployeesPage({ options, onDataChanged }: Props) {
             )}
           </p>
         </div>
-        <Button size="md" leftSection={<IconPlus size={18} stroke={2.4} />} onClick={(e) => openPanel(null, e.currentTarget)}>
+        <Button size="md" leftSection={<IconPlus size={18} stroke={2.4} />} onClick={() => openPanel(null)}>
           Add employee
         </Button>
       </header>
 
-      <div className="filters" role="search">
-        <TextInput
-          aria-label="Search people"
-          placeholder="Search name, email or job title"
-          leftSection={<IconSearch size={16} />}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.currentTarget.value)
-            setPage(1)
-          }}
-        />
-        <Select aria-label="Country" placeholder="All countries" data={options.countries} value={country} onChange={withPageReset(setCountry)} clearable searchable />
-        <Select aria-label="Department" placeholder="All departments" data={options.departments} value={department} onChange={withPageReset(setDepartment)} clearable searchable />
-        <Select aria-label="Job title" placeholder="All job titles" data={options.job_titles} value={jobTitle} onChange={withPageReset(setJobTitle)} clearable searchable />
+      <div className="filter-rail" role="search" aria-label="Filter people">
+        <label className="rail-search" data-active={debouncedSearch ? true : undefined}>
+          <IconSearch size={18} stroke={2} aria-hidden />
+          <VisuallyHidden>Search people</VisuallyHidden>
+          <input
+            type="search"
+            placeholder="Search name, email or job title"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.currentTarget.value)
+              setPage(1)
+            }}
+          />
+        </label>
+        <FilterField icon={IconWorld} label="Country" any="Any country" data={options.countries} value={country} onChange={withPageReset(setCountry)} />
+        <FilterField icon={IconBuilding} label="Department" any="Any department" data={options.departments} value={department} onChange={withPageReset(setDepartment)} />
+        <FilterField icon={IconBriefcase} label="Job title" any="Any job title" data={options.job_titles} value={jobTitle} onChange={withPageReset(setJobTitle)} />
         {filtersActive ? (
-          <Button variant="subtle" color="gray" leftSection={<IconX size={14} />} onClick={clearFilters}>
-            Clear filters
-          </Button>
+          <button type="button" className="rail-clear" onClick={clearFilters}>
+            <IconX size={14} stroke={2.4} aria-hidden />
+            Clear
+          </button>
         ) : null}
       </div>
 
@@ -311,7 +309,7 @@ export function EmployeesPage({ options, onDataChanged }: Props) {
                               variant="subtle"
                               color="gray"
                               aria-label={`Edit ${name}`}
-                              onClick={(ev) => openPanel(e, ev.currentTarget.closest('tr')?.querySelector<HTMLElement>('.who') ?? null)}
+                              onClick={() => openPanel(e)}
                             >
                               <IconPencil size={17} />
                             </ActionIcon>
@@ -393,13 +391,48 @@ export function EmployeesPage({ options, onDataChanged }: Props) {
       ) : null}
 
       <SidePanel
-        opened={editing !== undefined}
+        opened={panelOpen}
         kicker={editing ? 'Edit employee' : undefined}
         title={editing ? fullName(editing) : 'Add employee'}
         onClose={closePanel}
       >
         <EmployeeForm key={editing?.id ?? 'new'} employee={editing} options={options} onSubmit={save} onCancel={closePanel} />
       </SidePanel>
+    </div>
+  )
+}
+
+interface FilterFieldProps {
+  icon: Icon
+  label: string
+  any: string
+  data: string[]
+  value: string | null
+  onChange: (value: string | null) => void
+}
+
+/** One segment of the filter rail: a small caption over the current value, highlighted once set. */
+function FilterField({ icon: FieldIcon, label, any, data, value, onChange }: FilterFieldProps) {
+  const id = useId()
+  return (
+    <div className="rail-field" data-active={value ? true : undefined}>
+      <FieldIcon size={18} stroke={1.8} className="rail-icon" aria-hidden />
+      <div className="rail-body">
+        <label htmlFor={id} className="rail-label">{label}</label>
+        <Select
+          id={id}
+          variant="unstyled"
+          placeholder={any}
+          data={data}
+          value={value}
+          onChange={onChange}
+          clearable
+          searchable
+          nothingFoundMessage="No match"
+          classNames={{ input: 'rail-input' }}
+          comboboxProps={{ width: 260, position: 'bottom-start', offset: 14 }}
+        />
+      </div>
     </div>
   )
 }

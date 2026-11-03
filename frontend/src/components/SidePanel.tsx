@@ -1,6 +1,7 @@
 import { CloseButton, FocusTrap } from '@mantine/core'
 import { useFocusReturn } from '@mantine/hooks'
-import { type ReactNode, useEffect, useId } from 'react'
+import { type ReactNode, useEffect, useId, useState } from 'react'
+import { prefersReducedMotion } from '../motion'
 
 interface Props {
   opened: boolean
@@ -10,10 +11,25 @@ interface Props {
   children: ReactNode
 }
 
-/** Non-blocking-feeling editor panel rendered in-tree so it can morph from its trigger via View Transitions. */
+const EXIT_MS = 200
+
+/**
+ * Editor panel. Enter/exit are CSS transform + opacity animations on the live element (not View Transition
+ * snapshots, which scale a bitmap and look blurry), so text stays crisp and the glass blur keeps working.
+ */
 export function SidePanel({ opened, title, kicker, onClose, children }: Props) {
   const titleId = useId()
+  const [mounted, setMounted] = useState(opened)
+  if (opened && !mounted) setMounted(true) // mount immediately on open (state adjusted during render)
+  const closing = mounted && !opened
   useFocusReturn({ opened })
+
+  // Stay mounted for the exit animation, then unmount.
+  useEffect(() => {
+    if (!closing) return
+    const timer = setTimeout(() => setMounted(false), prefersReducedMotion() ? 0 : EXIT_MS)
+    return () => clearTimeout(timer)
+  }, [closing])
 
   useEffect(() => {
     if (!opened) return
@@ -25,18 +41,18 @@ export function SidePanel({ opened, title, kicker, onClose, children }: Props) {
     return () => document.removeEventListener('keydown', onKey)
   }, [opened, onClose])
 
-  if (!opened) return null
+  if (!mounted) return null
 
   return (
     <>
-      <div className="scrim" onClick={onClose} aria-hidden />
-      <FocusTrap active>
+      <div className="scrim" data-closing={closing || undefined} onClick={onClose} aria-hidden />
+      <FocusTrap active={opened}>
         <div
           className="panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          style={{ viewTransitionName: 'editor' }}
+          data-closing={closing || undefined}
         >
           <div className="panel-head">
             <div>

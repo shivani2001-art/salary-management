@@ -15,6 +15,10 @@ export default function App() {
 
   return (
     <Tabs defaultValue="insights" keepMounted={false} variant="pills">
+      <div className="backdrop" aria-hidden>
+        <i className="rosette rosette-a" />
+        <i className="rosette rosette-b" />
+      </div>
       <Box component="header" className="appbar" pos="sticky" top={0} style={{ zIndex: 100 }}>
         <Container size="xl" py={10}>
           <Group justify="space-between" wrap="nowrap" gap="sm">

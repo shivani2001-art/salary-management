@@ -84,7 +84,11 @@ export function InsightsPage({ options, refreshKey }: Props) {
               in
               <Select
                 aria-label="Country"
-                placeholder="All countries"
+                variant="unstyled"
+                className="q-country"
+                data-active={country ? true : undefined}
+                comboboxProps={{ width: 240, position: 'bottom-start', offset: 10 }}
+                placeholder="all countries"
                 data={options.countries}
                 value={country}
                 onChange={(value) => {

@@ -513,7 +513,12 @@ body {
   inset: 0;
   z-index: 200;
   background: color-mix(in oklch, var(--ink) 28%, transparent);
-  view-transition-name: scrim;
+  animation: fade-in 260ms var(--ease-out) both;
+}
+
+.scrim[data-closing] {
+  animation: fade-out 200ms ease-in forwards;
+  pointer-events: none;
 }
 
 .panel {
@@ -540,6 +545,42 @@ body {
   margin: 0;
 }
 
+/* Live-element animation (transform + opacity only) keeps the panel's text sharp. */
+.panel {
+  animation: panel-in 420ms var(--ease-out) both;
+}
+
+.panel[data-closing] {
+  animation: panel-out 200ms cubic-bezier(0.5, 0, 0.75, 0) forwards;
+  pointer-events: none;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem) scale(0.985);
+  }
+}
+
+@keyframes panel-out {
+  to {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
 /* ---------- View transitions ---------- */
 ::view-transition {
   pointer-events: none;
@@ -555,17 +596,17 @@ body {
   animation-duration: 260ms;
 }
 
-::view-transition-group(editor) {
-  animation-duration: 460ms;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .hl {
     animation: none;
     background-size: 100% 0.38em;
   }
 
-  .band {
+  .band,
+  .panel,
+  .panel[data-closing],
+  .scrim,
+  .scrim[data-closing] {
     animation: none;
   }
 

@@ -1,5 +1,5 @@
 /*
- * Glass layer: frosted surfaces over a slow ambient light field (pine, chartreuse, lagoon).
+ * Glass layer: frosted surfaces over an engraved guilloché backdrop (src/assets/guilloche.svg, from scripts/guilloche.mjs).
  * Loaded after page styles so it can retint shared tokens and containers without touching components.
  */
 :root {
@@ -13,9 +13,9 @@
   --surface: var(--glass-strong);
   --line: color-mix(in oklch, #13201a 11%, transparent);
   --row-hover: color-mix(in oklch, #0a7449 7%, transparent);
-  --field-a: color-mix(in oklch, #49ad81 42%, transparent);
-  --field-b: color-mix(in oklch, #d5f25c 60%, transparent);
-  --field-c: color-mix(in oklch, #5fc3c9 34%, transparent);
+  --engrave: color-mix(in oklch, #0a7449 30%, transparent);
+  --wash-a: color-mix(in oklch, #49ad81 16%, transparent);
+  --wash-b: color-mix(in oklch, #d5f25c 30%, transparent);
 }
 
 [data-mantine-color-scheme='dark'] {
@@ -27,30 +27,50 @@
     inset 0 1px 0 color-mix(in oklch, #ffffff 7%, transparent);
   --line: color-mix(in oklch, #ffffff 8%, transparent);
   --row-hover: color-mix(in oklch, #49ad81 10%, transparent);
-  --field-a: color-mix(in oklch, #148454 45%, transparent);
-  --field-b: color-mix(in oklch, #b8d94a 16%, transparent);
-  --field-c: color-mix(in oklch, #1f7f86 30%, transparent);
+  --engrave: color-mix(in oklch, #49ad81 24%, transparent);
+  --wash-a: color-mix(in oklch, #148454 22%, transparent);
+  --wash-b: color-mix(in oklch, #b8d94a 7%, transparent);
 }
 
-/* ---------- Ambient light field ---------- */
-body::before {
-  content: '';
+/* ---------- Backdrop: engraved guilloché, like the security pattern on a pay cheque ---------- */
+.backdrop {
   position: fixed;
-  inset: -25%;
+  inset: 0;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
   background:
-    radial-gradient(38% 34% at 18% 22%, var(--field-a), transparent 70%),
-    radial-gradient(30% 28% at 82% 18%, var(--field-b), transparent 70%),
-    radial-gradient(42% 40% at 70% 82%, var(--field-c), transparent 72%),
-    radial-gradient(26% 24% at 28% 78%, var(--field-b), transparent 70%);
-  animation: drift 36s ease-in-out infinite alternate;
-  will-change: transform;
+    linear-gradient(160deg, var(--wash-a) 0%, transparent 38%),
+    linear-gradient(340deg, var(--wash-b) 0%, transparent 42%);
 }
 
-@keyframes drift {
+.rosette {
+  position: absolute;
+  aspect-ratio: 1;
+  background: var(--engrave);
+  -webkit-mask: url('./assets/guilloche.svg') center / contain no-repeat;
+  mask: url('./assets/guilloche.svg') center / contain no-repeat;
+  animation: rosette-turn 420s linear infinite;
+}
+
+/* Top right, behind the headline; a second, larger one anchors the bottom left. */
+.rosette-a {
+  width: min(78vmax, 1100px);
+  top: max(-34vmax, -480px);
+  right: max(-26vmax, -380px);
+}
+
+.rosette-b {
+  width: min(96vmax, 1350px);
+  bottom: max(-52vmax, -720px);
+  left: max(-38vmax, -540px);
+  animation-direction: reverse;
+  opacity: 0.8;
+}
+
+@keyframes rosette-turn {
   to {
-    transform: translate3d(4%, -3%, 0) rotate(8deg) scale(1.06);
+    transform: rotate(360deg);
   }
 }
 
@@ -220,7 +240,7 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  .rosette {
     animation: none;
   }
 }
