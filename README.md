@@ -192,8 +192,8 @@ The HR Manager gets two places to work:
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=ruby,rails,sqlite,react,ts,vite,nodejs,docker,vercel&theme=dark&perline=9">
-    <img src="https://skillicons.dev/icons?i=ruby,rails,sqlite,react,ts,vite,nodejs,docker,vercel&theme=light&perline=9" alt="Ruby, Rails, SQLite, React, TypeScript, Vite, Node.js, Docker, Vercel">
+    <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=ruby%2Crails%2Csqlite%2Creact%2Cts%2Cvite%2Cnodejs%2Cdocker%2Cvercel&theme=dark&perline=9">
+    <img src="https://skillicons.dev/icons?i=ruby%2Crails%2Csqlite%2Creact%2Cts%2Cvite%2Cnodejs%2Cdocker%2Cvercel&theme=light&perline=9" alt="Ruby, Rails, SQLite, React, TypeScript, Vite, Node.js, Docker, Vercel">
   </picture>
 </div>
 
