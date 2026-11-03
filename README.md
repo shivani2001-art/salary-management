@@ -2,7 +2,8 @@
 
 <a href="https://salary-management-seven-xi.vercel.app">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.webp">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/banner-light.webp">
     <img src="docs/assets/banner-light.png" alt="ACME Pay: know how ACME pays its people" width="100%">
   </picture>
 </a>
@@ -18,7 +19,7 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-7-0A7449?logo=typescript&logoColor=white&style=for-the-badge">
   <img alt="Mantine"    src="https://img.shields.io/badge/Mantine-9-0A7449?logo=mantine&logoColor=white&style=for-the-badge">
   <img alt="SQLite"     src="https://img.shields.io/badge/SQLite-3-0A7449?logo=sqlite&logoColor=white&style=for-the-badge">
-  <img alt="Tests"      src="https://img.shields.io/badge/tests-80_passing-D5F25C?style=for-the-badge&labelColor=13201A">
+  <img alt="Tests"      src="https://img.shields.io/badge/tests-81_passing-D5F25C?style=for-the-badge&labelColor=13201A">
   <img alt="Vercel"     src="https://img.shields.io/badge/Live-Vercel-13201A?logo=vercel&logoColor=white&style=for-the-badge">
 </p>
 
@@ -164,7 +165,7 @@ The HR Manager gets two places to work:
     </td>
     <td valign="top">
       <h3>🪟 &nbsp;Glass + guilloché</h3>
-      <p>Frosted surfaces sit over an engraved guilloché pattern, the security print on pay cheques. Light and dark themes are tuned separately, and there's a solid fallback when blur isn't supported.</p>
+      <p>Frosted surfaces sit over an engraved guilloché pattern, the security print on pay cheques. A ☀️/🌙 toggle switches between separately tuned light and dark themes and remembers your choice. There's a solid fallback when blur isn't supported.</p>
     </td>
   </tr>
   <tr>
@@ -180,6 +181,101 @@ The HR Manager gets two places to work:
       <h3>🚀 &nbsp;Fast</h3>
       <p>Every endpoint answers in 5–20 ms on 10k rows. Pay stats are computed in SQL, and the medians for every group come from one window-function query.</p>
     </td>
+  </tr>
+</table>
+
+<br>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:0A7449,100:D5F25C&height=2&width=100%" width="100%">
+
+## 🧰 &nbsp;Tech stack
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://skillicons.dev/icons?i=ruby,rails,sqlite,react,ts,vite,nodejs,docker,vercel&theme=dark&perline=9">
+    <img src="https://skillicons.dev/icons?i=ruby,rails,sqlite,react,ts,vite,nodejs,docker,vercel&theme=light&perline=9" alt="Ruby, Rails, SQLite, React, TypeScript, Vite, Node.js, Docker, Vercel">
+  </picture>
+</div>
+
+<br>
+
+<table>
+  <tr>
+    <th></th><th align="left">Technology</th><th align="left">What it does here</th>
+  </tr>
+  <tr><td colspan="3"><b>⚙️ &nbsp;Backend</b></td></tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=rails" width="30" alt="Rails"></td>
+    <td><b>Rails 8.1</b> (API mode)</td>
+    <td>JSON API with thin controllers; the rules live in <code>EmployeesQuery</code> and <code>SalaryStats</code></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=ruby" width="30" alt="Ruby"></td>
+    <td><b>Ruby 3.3</b></td>
+    <td>Language for the API, the seeder and the specs</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=sqlite" width="30" alt="SQLite"></td>
+    <td><b>SQLite</b></td>
+    <td>10k employees, indexed for the list and stats queries; medians computed with window functions</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://cdn.simpleicons.org/puma/BD2C2C" width="26" alt="Puma"></td>
+    <td><b>Puma</b></td>
+    <td>Web server: serves <code>/api</code> and the built UI from one process</td>
+  </tr>
+  <tr><td colspan="3"><b>🎨 &nbsp;Frontend</b></td></tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=react" width="30" alt="React"></td>
+    <td><b>React 19</b></td>
+    <td>UI: the People and Insights pages, side panel, click-to-edit salaries</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=ts" width="30" alt="TypeScript"></td>
+    <td><b>TypeScript 7</b></td>
+    <td>Typed API client and components</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://cdn.simpleicons.org/mantine/339AF0" width="26" alt="Mantine"></td>
+    <td><b>Mantine 9</b></td>
+    <td>Accessible inputs, popovers and notifications, themed to pine and chartreuse, with light/dark switching</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=vite" width="30" alt="Vite"></td>
+    <td><b>Vite</b></td>
+    <td>Dev server (proxies <code>/api</code>) and production build</td>
+  </tr>
+  <tr><td colspan="3"><b>🧪 &nbsp;Quality</b></td></tr>
+  <tr>
+    <td align="center">💎</td>
+    <td><b>RSpec</b></td>
+    <td>51 backend specs: model, query, stats, seeder and request specs</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://cdn.simpleicons.org/vitest/6E9F18" width="26" alt="Vitest"></td>
+    <td><b>Vitest</b> + <img src="https://cdn.simpleicons.org/testinglibrary/E33332" width="14" alt=""> <b>Testing Library</b></td>
+    <td>30 frontend tests, run in jsdom</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://cdn.simpleicons.org/rubocop/CC342D" width="26" alt="RuboCop"></td>
+    <td><b>RuboCop</b> · <b>oxlint</b></td>
+    <td>Lint Ruby (Rails Omakase) and TypeScript</td>
+  </tr>
+  <tr><td colspan="3"><b>🚢 &nbsp;Ship</b></td></tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=docker" width="30" alt="Docker"></td>
+    <td><b>Docker</b></td>
+    <td>One image: Vite build + Rails + a pre-seeded database</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://skillicons.dev/icons?i=vercel" width="30" alt="Vercel"></td>
+    <td><b>Vercel</b></td>
+    <td>Runs the image on its Container Runtime: <a href="https://salary-management-seven-xi.vercel.app">salary-management-seven-xi.vercel.app</a></td>
+  </tr>
+  <tr>
+    <td align="center">🎭</td>
+    <td><b>Playwright</b> + <img src="https://cdn.simpleicons.org/ffmpeg/007808" width="14" alt=""> <b>ffmpeg</b></td>
+    <td>Generate this README's animated banner (frame-stepped CSS → WebP), screenshots and demo GIF (<code>docs/assets/src/capture.mjs</code>)</td>
   </tr>
 </table>
 
@@ -206,13 +302,6 @@ flowchart TB
     S --> DB
   end
 ```
-
-| Layer | Choice | Why |
-|---|---|---|
-| **API** | Rails 8.1 (API mode) | Thin controllers; the business rules live in a query object and a stats service, so they're unit-tested without HTTP |
-| **DB** | SQLite | Zero ops, and more than fast enough for 10k rows. Salaries are stored as integer whole dollars, so sums never pick up rounding errors |
-| **UI** | React 19 · TypeScript · Mantine 9 | Accessible components; a 25-line data hook instead of another library |
-| **Deploy** | One Docker image | One origin (so no CORS setup), and the same image runs locally, on Render or on Vercel |
 
 Full write-up, including the API reference, trade-offs, performance notes and next steps: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
@@ -260,8 +349,8 @@ cd frontend && npm install && npm run dev                                  # UI 
     <td>Model validation and normalization · search, filter, sort and paging · stats (odd/even medians, scoping, rejected group names) · seeder (same data every run, valid rows) · request specs for every endpoint (404, 422, 400)</td>
   </tr>
   <tr>
-    <td>⚛️ &nbsp;<b>Vitest</b></td><td align="right"><b>29</b></td>
-    <td>API client (query strings, field errors) · formatting · employee form (validation, server errors) · click-to-edit salary (Enter, Esc, invalid input) · pay band geometry · counting numbers under reduced motion</td>
+    <td>⚛️ &nbsp;<b>Vitest</b></td><td align="right"><b>30</b></td>
+    <td>API client (query strings, field errors) · formatting · employee form (validation, server errors) · click-to-edit salary (Enter, Esc, invalid input) · pay band geometry · counting numbers under reduced motion · theme toggle</td>
   </tr>
 </table>
 
